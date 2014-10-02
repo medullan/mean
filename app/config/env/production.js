@@ -5,6 +5,7 @@ var logOutputFile = 'app.log';
 
 module.exports = {
 	db: process.env.MONGOHQ_URL || process.env.MONGOLAB_URI || 'mongodb://localhost/mean',
+	envName: 'production',
 	log4js: {
 		logFile: logOutputFile,
 		config: {

@@ -5,6 +5,7 @@ var logOutputFile = 'app.log';
 
 module.exports = {
 	db: 'mongodb://localhost/mean-dev',
+	envName: 'development',
 	app: {
 		title: 'MEAN.JS - Development Environment'
 	},

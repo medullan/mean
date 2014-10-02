@@ -1,13 +1,10 @@
 'use strict';
 
-var shelljs = require('shelljs');
-var format = require('string-template');
-
 module.exports = function(grunt) {
   // Unified Watch Object
   var watchFiles = {
     serverViews: ['app/views/**/*.*'],
-    serverJS: ['gruntfile.js', 'server.js', 'app/**/*.js'],
+    serverJS: ['gruntfile.js', 'server.js', 'app/**/*.js', 'config/**/*.js'],
     nodeFiles: ['server.js', 'app/**/*.js'],
     clientViews: ['public/modules/**/views/**/*.html'],
     clientJS: ['public/*.js', 'public/modules/*/js/**/*.js'],
@@ -128,6 +125,7 @@ module.exports = function(grunt) {
       debug: ['nodemon', 'watch', 'node-inspector'],
       docs: ['doxx:shell', 'ngdocs', 'plato'],
       test: ['test:ui', 'test:server'],
+      robot: ['startApp:robot', 'test:robot:local'],
       options: {
         logConcurrentOutput: true,
         limit: 6
@@ -136,6 +134,10 @@ module.exports = function(grunt) {
     env: {
       test: {
         NODE_ENV: 'test'
+      },
+      robot: {
+        NODE_ENV: 'development',
+        COVERAGE: 'true'
       }
     },
     karma: {
@@ -162,6 +164,8 @@ module.exports = function(grunt) {
     clean: {
       docs: ['<%= meta.reports %>/docs'],
       coverage: ['<%= meta.reports %>/coverage'],
+      robot: ['<%= meta.reports %>/coverage/robot', 'download'],
+      download: ['download'],
       istanbul:['<%= meta.reports %>/coverage/server/app', '<%= meta.reports %>/coverage/server/server.js']
     },
     plato: {
@@ -186,62 +190,29 @@ module.exports = function(grunt) {
           '<%= meta.reports %>/plato/ui': [ 'public/**/*.js']
         }
       }
+    },
+    waitServer: {
+      server: {
+        options: {
+          url: 'http://localhost:3000',
+          fail: function () {process.exit(6);},
+          timeout: 10 * 10000,
+          isforce: false,
+          interval: 8000,
+          print: true
+        }
+      }
     }
   });
 
   // Load NPM tasks
   require('load-grunt-tasks')(grunt);
   require('time-grunt')(grunt);
+  require('./config/grunt/customTasks')(grunt);
 
   // Making grunt default to force in order not to break the project.
   grunt.option('force', true);
 
-  // A Task for loading the configuration object
-  grunt.task.registerTask('loadConfig', 'Task that loads the config into a grunt option.', function() {
-    var init = require('./app/config/init')();
-    var config = require('./app/config/config');
-
-    grunt.config.set('applicationJavaScriptFiles', config.assets.js);
-    grunt.config.set('applicationCSSFiles', config.assets.css);
-  });
-
-  // A task for generating documentation using doxx CLI
-  grunt.task.registerTask('doxx:shell', 'documentation', function() {
-    var options = {
-      ignore: 'tests,views',
-      source: 'app',
-      dest: grunt.config.process('<%= meta.reports %>') + '/docs/doxx',
-      title: 'Documentation'
-    };
-
-    var template = './node_modules/doxx/bin/doxx --source {source} --target \'{dest}\' --ignore \'{ignore}\' -t \'{title}\'';
-    var command = format(template, options);
-    var result = shelljs.exec(command);
-
-    if(result.code === 0){
-      grunt.log.ok('(doxx:shell) Documentation created successfully');
-    }else{
-      grunt.log.error('(doxx:shell) ERROR: something went wrong!');
-    }
-  });
-
-  // A task for running tests with mocha CLI and doing code coverage with istanbul CLI
-  grunt.task.registerTask('istanbul:mocha:cover', 'nodejs code coverage', function() {
-    var options = {
-      configFile: '.istanbul.yml',
-      testFiles: 'app/tests/**/*.js',
-    };
-
-    var template = 'istanbul cover --config={configFile} node_modules/.bin/_mocha {testFiles}';
-    var command = format(template, options);
-    var result = shelljs.exec(command);
-
-    if(result.code === 0){
-      grunt.log.ok('(istanbul:mocha:cover) Coverage done successfully');
-    }else{
-      grunt.log.error('(istanbul:mocha:cover) ERROR: oops. something went wrong!');
-    }
-  });
   // Default task(s).
   grunt.registerTask('default', ['lint', 'concurrent:default']);
 
@@ -258,6 +229,20 @@ module.exports = function(grunt) {
   grunt.registerTask('test', ['clean:coverage', 'lint','concurrent:test']);
   grunt.registerTask('test:ui', ['env:test', 'karma:unit']);
   grunt.registerTask('test:server', ['istanbul:mocha:cover', 'clean:istanbul']);
+  grunt.registerTask('test:robot:cov', ['clean:robot', 'robot:test', 'robot:getCoverage', 'clean:download']);
+
+  // only call this when robot tests are run locally 'test:robot'
+  grunt.registerTask('test:robot:local', ['waitServer:server', 'test:robot:cov','exit']);
+  grunt.registerTask('startApp:robot', ['startApp', 'watch']);
+  grunt.registerTask('test:robot', ['env:robot', 'concurrent:robot']);
+  // end local robot test definition
+
+  /**
+   *  Task for doing functional test coverage on remote server
+   *  this would not need to spawn a server locally and would not need the exit task
+   *  This task assumes the server is already running but verifies the coverage  endpoint is active
+   **/
+  grunt.registerTask('test:robot:remote', ['verifyCoverageEndpoint', 'test:robot:cov']);
 
   grunt.registerTask('docs', ['clean:docs', 'concurrent:docs' ]);
 };
