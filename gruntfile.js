@@ -125,7 +125,7 @@ module.exports = function(grunt) {
       debug: ['nodemon', 'watch', 'node-inspector'],
       docs: ['doxx:shell', 'ngdocs', 'plato'],
       test: ['test:ui', 'test:server'],
-      robot: ['startApp:robot', 'test:robot:local'],
+      robot: ['startApp:robot', 'test:robot:server'],
       options: {
         logConcurrentOutput: true,
         limit: 6
@@ -231,8 +231,8 @@ module.exports = function(grunt) {
   grunt.registerTask('test:server', ['istanbul:mocha:cover', 'clean:istanbul']);
   grunt.registerTask('test:robot:cov', ['clean:robot', 'robot:test', 'robot:getCoverage', 'clean:download']);
 
-  // only call this when robot tests are run locally 'test:robot'
-  grunt.registerTask('test:robot:local', ['waitServer:server', 'test:robot:cov','exit']);
+  // only call this when robot tests are run locally 'test:robot:local'
+  grunt.registerTask('test:robot:server', ['waitServer:server', 'test:robot:cov','exit']);
   grunt.registerTask('startApp:robot', ['startApp', 'watch']);
   grunt.registerTask('test:robot:local', ['env:robot', 'concurrent:robot']);
   // end local robot test definition
