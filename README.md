@@ -29,6 +29,7 @@ $ npm install -g bower
 $ sudo npm install -g grunt-cli
 ```
 
+## Medullan Team Additions
 To see Medullan specific additions, Please view the [wiki](https://github.com/medullan/mean/wiki)
 
 ## Downloading MEAN.JS
