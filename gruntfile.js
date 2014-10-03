@@ -234,7 +234,7 @@ module.exports = function(grunt) {
   // only call this when robot tests are run locally 'test:robot'
   grunt.registerTask('test:robot:local', ['waitServer:server', 'test:robot:cov','exit']);
   grunt.registerTask('startApp:robot', ['startApp', 'watch']);
-  grunt.registerTask('test:robot', ['env:robot', 'concurrent:robot']);
+  grunt.registerTask('test:robot:local', ['env:robot', 'concurrent:robot']);
   // end local robot test definition
 
   /**
@@ -242,7 +242,7 @@ module.exports = function(grunt) {
    *  this would not need to spawn a server locally and would not need the exit task
    *  This task assumes the server is already running but verifies the coverage  endpoint is active
    **/
-  grunt.registerTask('test:robot:remote', ['verifyCoverageEndpoint', 'test:robot:cov']);
+  grunt.registerTask('test:robot', ['verifyCoverageEndpoint', 'test:robot:cov']);
 
   grunt.registerTask('docs', ['clean:docs', 'concurrent:docs' ]);
 };
