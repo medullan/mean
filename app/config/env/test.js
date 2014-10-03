@@ -4,6 +4,7 @@ var logOutputFile = 'app.log';
 
 module.exports = {
 	db: 'mongodb://localhost/mean-test',
+	envName: 'test',
 	port: 3001,
 	app: {
 		title: 'MEAN.JS - Test Environment'
