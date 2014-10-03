@@ -19,13 +19,13 @@ Make sure you have installed all these prerequisites on your development machine
 * MongoDB - [Download & Install MongoDB](http://www.mongodb.org/downloads), and make sure it's running on the default port (27017).
 * Bower - You're going to use the [Bower Package Manager](http://bower.io/) to manage your front-end packages, in order to install it make sure you've installed Node.js and npm, then install bower globally using npm:
 
-```
+```bash
 $ npm install -g bower
 ```
 
 * Grunt - You're going to use the [Grunt Task Runner](http://gruntjs.com/) to automate your development process, in order to install it make sure you've installed Node.js and npm, then install grunt globally using npm:
 
-```
+```bash
 $ sudo npm install -g grunt-cli
 ```
 
@@ -37,14 +37,14 @@ There are several ways you can get the MEAN.JS boilerplate:
 
 ### Cloning The GitHub Repository
 You can also use Git to directly clone the MEAN.JS repository:
-```
+```bash
 $ git clone https://github.com/medullan/mean.git meanjs
 ```
 This will clone the latest version of the MEAN.JS repository to a **meanjs** folder.
 
 ### Downloading The Repository Zip File
 Another way to use the MEAN.JS boilerplate is to download a zip copy from the [master branch on github](https://github.com/meanjs/mean/archive/master.zip). You can also do this using `wget` command:
-```
+```bash
 $ wget https://github.com/medullan/mean/archive/master.zip -O meanjs.zip; unzip meanjs.zip; rm meanjs.zip
 ```
 Don't forget to rename **mean-master** after your project name.
@@ -56,7 +56,7 @@ The first thing you should do is install the Node.js dependencies. The boilerpla
 
 To install Node.js dependencies you're going to use npm again, in the application folder run this in the command-line:
 
-```
+```bash
 $ npm install
 ```
 
@@ -68,7 +68,7 @@ This command does a few things:
 ## Running Your Application
 After the install process is over, you'll be able to run your application using Grunt, just run grunt default task:
 
-```
+```bash
 $ grunt
 ```
 
