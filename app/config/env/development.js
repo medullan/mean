@@ -4,7 +4,7 @@ var server = process.env.SERVER_BASE || 'http://localhost:3000';
 var logOutputFile = 'app.log';
 
 module.exports = {
-	db: 'mongodb://localhost/mean-dev',
+	db: 'mongodb://localhost' + '/' + (process.env.DB_NAME || 'mean-dev'),
 	envName: 'development',
 	app: {
 		title: 'MEAN.JS - Development Environment'

@@ -37,7 +37,7 @@ module.exports = function(grunt){
   // A task for running tests with mocha CLI and doing code coverage with istanbul CLI
   grunt.task.registerTask('istanbul:mocha:cover', 'nodejs code coverage', function() {
     var options = {
-      configFile: '.istanbul.yml',
+      configFile: 'config/.istanbul.yml',
       testFiles: 'app/tests/**/*.js',
     };
 

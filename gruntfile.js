@@ -1,6 +1,7 @@
 'use strict';
 
 module.exports = function(grunt) {
+
   // Unified Watch Object
   var watchFiles = {
     serverViews: ['app/views/**/*.*'],
@@ -245,4 +246,5 @@ module.exports = function(grunt) {
   grunt.registerTask('test:robot', ['verifyCoverageEndpoint', 'test:robot:cov']);
 
   grunt.registerTask('docs', ['clean:docs', 'concurrent:docs' ]);
+
 };
