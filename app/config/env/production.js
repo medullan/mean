@@ -4,7 +4,7 @@ var server = process.env.SERVER_BASE || 'http://localhost:3000';
 var logOutputFile = 'app.log';
 
 module.exports = {
-	db: process.env.MONGOHQ_URL || process.env.MONGOLAB_URI || 'mongodb://localhost/mean',
+	db: process.env.MONGOHQ_URL || process.env.MONGOLAB_URI || 'mongodb://' + (process.env.DB_1_PORT_27017_TCP_ADDR || 'localhost') + '/' + (process.env.DB_NAME || 'mean')
 	envName: 'production',
 	log4js: {
 		logFile: logOutputFile,

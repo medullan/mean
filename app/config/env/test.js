@@ -3,7 +3,7 @@ var server = process.env.SERVER_BASE || 'http://localhost:3000';
 var logOutputFile = 'app.log';
 
 module.exports = {
-	db: 'mongodb://localhost/mean-test',
+	db: 'mongodb://localhost' + '/' + (process.env.DB_NAME || 'mean-test'),
 	envName: 'test',
 	port: 3001,
 	app: {
