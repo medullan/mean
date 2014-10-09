@@ -1,5 +1,6 @@
 'use strict';
-var server = process.env.SERVER_BASE || 'http://localhost:3000';
+var port = process.env.SERVER_BASE || 3000 ;
+var server = process.env.SERVER_BASE || 'http://localhost:' + port;
 var logOutputFile = 'app.log';
 
 module.exports = {

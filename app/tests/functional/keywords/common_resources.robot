@@ -14,7 +14,8 @@ ${DESIRED_CAPABILITIES}
 ${TEST_NAME}
 ${TEST_TAGS}
 ${BROWSER}  phantomjs
-${HOST}  http://localhost:3000
+${PORT}  3000
+${HOST}  http://localhost:${PORT}
 ${URL}  ${HOST}/\#!
 
 ${DELAY}  1
