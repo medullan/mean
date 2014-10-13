@@ -136,7 +136,7 @@ module.exports = function(grunt) {
       test: {
         NODE_ENV: 'test'
       },
-      robot: {
+      dev: {
         NODE_ENV: 'development',
         COVERAGE: 'true'
       }
@@ -227,7 +227,7 @@ module.exports = function(grunt) {
   grunt.registerTask('build', ['lint', 'loadConfig', 'ngAnnotate', 'uglify', 'cssmin']);
 
   // Test task.
-  grunt.registerTask('test', ['clean:coverage', 'lint','concurrent:test']);
+  grunt.registerTask('test', ['setTestEnvVars','clean:coverage', 'lint','concurrent:test']);
   grunt.registerTask('test:ui', ['env:test', 'karma:unit']);
   grunt.registerTask('test:server', ['istanbul:mocha:cover', 'clean:istanbul']);
   grunt.registerTask('test:robot:cov', ['verifyCoverageEndpoint', 'clean:robot', 'robot:test',  'robot:getCoverage', 'clean:download']);
@@ -235,7 +235,7 @@ module.exports = function(grunt) {
   // only call this when robot tests are run locally 'test:robot:local'
   grunt.registerTask('test:robot:server', ['updateWaitServer', 'waitServer:server', 'test:robot:cov','exit']);
   grunt.registerTask('startApp:robot', ['startApp', 'watch']);
-  grunt.registerTask('test:robot:local', ['setTestEnvVars', 'env:robot', 'concurrent:robot']);
+  grunt.registerTask('test:robot:local', ['setTestEnvVars', 'env:dev', 'concurrent:robot']);
   // end local robot test definition
 
   /**

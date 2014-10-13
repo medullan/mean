@@ -6,6 +6,15 @@ var request = require('request');
 var _ = require('lodash');
 
 module.exports = function(grunt){
+
+  var getPort = function(){
+    var port = grunt.option( 'port' ) || 3000;
+    if(grunt.option( 'host' ) && !grunt.option( 'port' )){
+      port = 80;
+    }
+    return port;
+  };
+
   // A Task for loading the configuration object
   grunt.task.registerTask('loadConfig', 'Task that loads the config into a grunt option.', function() {
     var init = require('./app/config/init')();
@@ -54,7 +63,7 @@ module.exports = function(grunt){
   });
 
   grunt.task.registerTask('robot:test', 'add code coverage after functional tests', function() {
-    var port = grunt.option( 'port' ) || 3000;
+    var port = getPort();
     var browser = grunt.option( 'browser' ) || 'phantomjs';
     var url = grunt.option( 'host' ) || ('http://localhost:' + port) ;
     var options = {
@@ -65,7 +74,7 @@ module.exports = function(grunt){
       browser: browser
     };
 
-    var template = 'pybot -d {output}  -v HOST:"{url}" -v PORT:"{port}" -v BROWSER:"{browser}" {testFiles} ';
+    var template = 'pybot -d {output}  -v HOST:"{url}" -v BROWSER:"{browser}" {testFiles} ';
     var command = format(template, options);
     var result = shelljs.exec(command);
     if(result.code === 0){
@@ -77,7 +86,7 @@ module.exports = function(grunt){
   });
 
   grunt.task.registerTask('robot:getCoverage', 'add code coverage after functional tests', function() {
-    var port = grunt.option( 'port' ) || 3000;
+    var port = getPort();
     var host = grunt.option( 'host' ) || ('http://localhost:' + port)  ;
     var options = {
       output: grunt.config.process('<%= meta.reports %>') + '/coverage/robot',
@@ -96,7 +105,7 @@ module.exports = function(grunt){
   });
 
   grunt.registerTask('verifyCoverageEndpoint', 'checks for ok response from coverage endpoint', function() {
-    var port = grunt.option( 'port' ) || 3000;
+    var port = getPort();
     var host = grunt.option( 'host' ) || ('http://localhost:' + port)  ;
     var url =  host + '/coverage';
     var done = this.async();
@@ -140,7 +149,7 @@ module.exports = function(grunt){
   });
 
   grunt.registerTask('updateWaitServer', 'updates url in waitServer.', function() {
-      var port = grunt.option( 'port' ) || 3000;
+      var port = getPort();
       var host = grunt.option( 'host' ) || ('http://localhost:' + port);
 
       var gruntConfigProp = 'waitServer';
@@ -152,8 +161,8 @@ module.exports = function(grunt){
   });
 
   grunt.registerTask('setTestEnvVars', 'updates url in waitServer.', function() {
-      var port = grunt.option( 'port' ) || 3000;
-      var envName = grunt.option( 'env' ) || 'robot';
+      var port = getPort();
+      var envName = grunt.option( 'env' ) || 'dev';
       var dbName = grunt.option( 'dbname' ) || ('mean-' + port);
       var gruntConfigProp = 'env';
       var env = {
@@ -161,7 +170,7 @@ module.exports = function(grunt){
         PORT: port
       };
       var prop = grunt.config.get(gruntConfigProp);
-      prop[envName] = _.extend(prop.robot, env);
+      prop[envName] = _.extend(prop[envName], env);
       grunt.config.set(gruntConfigProp, prop);
       grunt.log.write('Complete. env vars \n' , prop[envName]);
   });
