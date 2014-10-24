@@ -1,11 +1,11 @@
 'use strict';
 
-var port = process.env.SERVER_BASE || 3000 ;
+var port = process.env.PORT || 3000 ;
 var server = process.env.SERVER_BASE || 'http://localhost:' + port;
 var logOutputFile = 'app.log';
 
 module.exports = {
-	db: 'mongodb://localhost' + '/' + (process.env.DB_NAME || 'mean-dev'),
+	db: process.env.MONGOHQ_URL || process.env.MONGOLAB_URI || 'mongodb://localhost' + '/' + (process.env.DB_NAME || 'mean-dev'),
 	envName: 'development',
 	app: {
 		title: 'MEAN.JS - Development Environment'
