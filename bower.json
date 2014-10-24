@@ -11,7 +11,7 @@
     "angular-bootstrap": "~0.11.0",
     "angular-ui-utils": "~0.1.1",
     "angular-ui-router": "~0.2.10",
-    "angular-logex": "~0.0.7",
+    "angular-logex": "~0.0.9",
     "angular-utilz": "~0.0.18"
   }
 }
